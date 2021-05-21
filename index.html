@@ -12,14 +12,36 @@
 <body>
   <span id="measurementItem">*Measurement*</span>
 <script>
-function test(measurement) {
+function display(measurement) {
   document.getElementById("measurementItem").innerHTML = measurement;
   return;
 }
 
-sensor = new Accelerometer({frequency: 30 });
-sensor.onreading = _ => test(sensor.timestamp);
-sensor.start();
+let accelerometer = null;
+try {
+  accelerometer = new Accelerometer({ frequency: 10 });
+  accelerometer.onerror = (event) => {
+    // Handle runtime errors.
+    if (event.error.name === 'NotAllowedError') {
+      display('Permission to access sensor was denied.');
+    } else if (event.error.name === 'NotReadableError') {
+      display('Cannot connect to the sensor.');
+    }
+  };
+  accelerometer.onreading = (e) => {
+    display(e);
+  };
+  accelerometer.start();
+} catch (error) {
+  // Handle construction errors.
+  if (error.name === 'SecurityError') {
+    display('Sensor construction was blocked by the Permissions Policy.');
+  } else if (error.name === 'ReferenceError') {
+    display('Sensor is not supported by the User Agent.');
+  } else {
+    throw error;
+  }
+}
 </script>
 </body>
 </html>
