@@ -34,7 +34,8 @@ try {
   accelerometer.onreading = () => {
     previousMeasurementTmp = accelerometer.timestamp;
     inferredFrequency = 1/(previousMeasurementTmp - previousMeasurement.timestamp);
-    display("Inferred frequency: " + inferredFrequency);
+    //display("Inferred frequency: " + inferredFrequency);
+    display(previousMeasurementTmp);
     previousMeasurement = previousMeasurementTmp;
   };
   accelerometer.start();
