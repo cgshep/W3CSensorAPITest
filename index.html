@@ -18,6 +18,8 @@ function display(measurement) {
 }
 
 let accelerometer = null;
+let previousMeasurement = 0;
+let inferredFrequency = 0;
 try {
   accelerometer = new Accelerometer({ frequency: 10 });
   accelerometer.onerror = (event) => {
@@ -29,7 +31,9 @@ try {
     }
   };
   accelerometer.onreading = (e) => {
-    display(e);
+    inferredFrequency = 1/(e.timestamp - previousMeasurement.timestamp);
+    display("Inferred frequency: " + inferredFrequency);
+    previousMeasurement = e;
   };
   accelerometer.start();
 } catch (error) {
