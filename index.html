@@ -19,6 +19,7 @@ function display(measurement) {
 
 let accelerometer = null;
 let previousMeasurement = 0;
+let previousMeasurementTmp = 0;
 let inferredFrequency = 0;
 try {
   accelerometer = new Accelerometer({ frequency: 10 });
@@ -30,10 +31,11 @@ try {
       display('Cannot connect to the sensor.');
     }
   };
-  accelerometer.onreading = (e) => {
-    inferredFrequency = 1/(e.timestamp - previousMeasurement.timestamp);
+  accelerometer.onreading = () => {
+    previousMeasurementTmp = accelerometer.timestamp;
+    inferredFrequency = 1/(previousMeasurementTmp - previousMeasurement.timestamp);
     display("Inferred frequency: " + inferredFrequency);
-    previousMeasurement = e;
+    previousMeasurement = previousMeasurementTmp;
   };
   accelerometer.start();
 } catch (error) {
