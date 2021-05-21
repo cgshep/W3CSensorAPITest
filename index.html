@@ -35,7 +35,7 @@ try {
     previousMeasurementTmp = accelerometer.timestamp;
     inferredFrequency = 1/(previousMeasurementTmp - previousMeasurement.timestamp);
     //display("Inferred frequency: " + inferredFrequency);
-    display(previousMeasurementTmp);
+    display(accelerometer.timestamp);
     previousMeasurement = previousMeasurementTmp;
   };
   accelerometer.start();
