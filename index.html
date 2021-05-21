@@ -16,7 +16,8 @@ function test(measurement) {
   document.getElementById("measurementItem").innerHTML = measurement;
   return;
 }
-  
+
+sensor = new Accelerometer({frequency: 30 });
 sensor.onreading = _ => test(sensor.timestamp);
 sensor.start();
 </script>
